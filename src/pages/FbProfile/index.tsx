@@ -20,12 +20,13 @@ function FbProfile() {
   const PROFILE_PICTURE_URI =
     'https://pbs.twimg.com/profile_images/975388677642715136/7Hw2MgQ2_400x400.jpg';
 
+  const TRANSLATION_Y = 32;
   const PROFILE_BANNER_URI =
     'https://i.pinimg.com/564x/aa/55/41/aa5541d265687d1fb50d15e6088013d6.jpg';
   const ScrollY = useRef(new Animated.Value(0)).current;
   //   const Scale = useRef(new Animated.Value(1)).current;
 
-  const AnimatedFlatList = 
+  // const AnimatedFlatList =
 
   const AnimatedImageBackground =
     Animated.createAnimatedComponent(ImageBackground);
@@ -82,16 +83,15 @@ function FbProfile() {
           height: HEADER_HEIGHT_EXPANDED + HEADER_HEIGHT_NARROWED,
           transform: [
             {
-              scale: ScrollY.interpolate({
-                inputRange: [0, 200],
-                outputRange: [1, 5],
+              translateY: ScrollY.interpolate({
+                inputRange: [0, TRANSLATION_Y],
+                outputRange: [0, -TRANSLATION_Y],
                 extrapolate: 'clamp',
-                // extrapolateRight: 'clamp'
               }),
             },
           ],
         }}>
-        <AnimatedBlurView
+        {/* <AnimatedBlurView
           blurReductionFactor={11}
           intensity={96}
           tint="dark"
@@ -104,139 +104,141 @@ function FbProfile() {
               extrapolate: 'clamp',
             }),
           }}
-        />
+        /> */}
       </AnimatedImageBackground>
-      <View style={{flex:1,backgroundColor:'black',marginTop:-30,}}>
- 
-        <Animated.FlatList
-          
+      <View style={{flex: 1, backgroundColor: 'black', paddingHorizontal: 20}}>
+        <Animated.Image
+          source={{uri: PROFILE_PICTURE_URI}}
+          style={{
+            width: 75,
+            height: 75,
+            borderRadius: 40,
+            borderWidth: 4,
+            borderColor: 'black',
+            marginTop: -32,
+            zIndex: 99,
+            transform: [
+              {
+                scale: ScrollY.interpolate({
+                  inputRange: [0, TRANSLATION_Y],
+                  outputRange: [1, 0.5],
+                  extrapolate: 'clamp',
+                }),
+              },
+            ],
+          }}
+        />
+        <Animated.ScrollView
           showsHorizontalScrollIndicator={false}
           style={{
+            // height: '100%',
             flex: 1,
             zIndex: 3,
-            // marginTop: HEADER_HEIGHT_NARROWED,
-            // paddingTop: HEADER_HEIGHT_EXPANDED,
           }}
+          scrollEnabled={true}
           onScroll={handleScroll}>
-          {/* <View style={{flex: 1, backgroundColor: 'black'}}> */}
-            <View style={[styles.container, {paddingHorizontal: 20}]}>
-            <Animated.Image
-                source={{uri: PROFILE_PICTURE_URI}}
+          <Text
+            style={[
+              styles.text,
+              {
+                fontSize: 24,
+                fontWeight: 'bold',
+                marginTop: 10,
+              },
+            ]}>
+            TmKnight
+          </Text>
+
+          <Text
+            style={[
+              styles.text,
+              {
+                fontSize: 15,
+                color: 'gray',
+                marginBottom: 15,
+              },
+            ]}>
+            xqh5087@gmail.com.hk
+          </Text>
+
+          <Text style={[styles.text, {marginBottom: 15, fontSize: 15}]}>
+            Same @ on every social media
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginBottom: 15,
+            }}>
+            <Text
+              style={[
+                styles.text,
+                {
+                  fontWeight: 'bold',
+                  marginRight: 10,
+                },
+              ]}>
+              70{' '}
+              <Text
                 style={{
-                  width: 75,
-                  height: 75,
-                  borderRadius: 40,
-                  borderWidth: 4,
-                  // marginLeft:20,
-                  borderColor: 'black',
-                  
-                  zIndex:99
+                  color: 'gray',
+                  fontWeight: 'normal',
+                }}>
+                Following
+              </Text>
+            </Text>
+
+            <Text style={[styles.text, {fontWeight: 'bold'}]}>
+              106{' '}
+              <Text
+                style={{
+                  color: 'gray',
+                  fontWeight: 'normal',
+                }}>
+                Followers
+              </Text>
+            </Text>
+          </View>
+
+          {TWEETS.map((item, index) => (
+            <View key={item.key} style={styles.tweet}>
+              <Image
+                source={{
+                  uri: PROFILE_PICTURE_URI,
+                }}
+                style={{
+                  height: 50,
+                  width: 50,
+                  borderRadius: 25,
+                  marginRight: 10,
                 }}
               />
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    fontSize: 24,
-                    fontWeight: 'bold',
-                    marginTop: 10,
-                  },
-                ]}>
-                TmKnight
-              </Text>
 
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    fontSize: 15,
-                    color: 'gray',
-                    marginBottom: 15,
-                  },
-                ]}>
-                xqh5087@gmail.com.hk
-              </Text>
-
-              <Text style={[styles.text, {marginBottom: 15, fontSize: 15}]}>
-                Same @ on every social media
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginBottom: 15,
-                }}>
+              <View style={styles.container}>
                 <Text
                   style={[
                     styles.text,
                     {
                       fontWeight: 'bold',
-                      marginRight: 10,
+                      fontSize: 15,
                     },
                   ]}>
-                  70{' '}
+                  {item.author}{' '}
                   <Text
                     style={{
                       color: 'gray',
                       fontWeight: 'normal',
                     }}>
-                    Following
+                    @{item.tag} · {index + 1}d
                   </Text>
                 </Text>
 
-                <Text style={[styles.text, {fontWeight: 'bold'}]}>
-                  106{' '}
-                  <Text
-                    style={{
-                      color: 'gray',
-                      fontWeight: 'normal',
-                    }}>
-                    Followers
-                  </Text>
+                <Text style={[styles.text, {fontSize: 15}]}>
+                  {item.description}
                 </Text>
               </View>
-
-              {TWEETS.map((item, index) => (
-                <View key={item.key} style={styles.tweet}>
-                  <Image
-                    source={{
-                      uri: PROFILE_PICTURE_URI,
-                    }}
-                    style={{
-                      height: 50,
-                      width: 50,
-                      borderRadius: 25,
-                      marginRight: 10,
-                    }}
-                  />
-
-                  <View style={styles.container}>
-                    <Text
-                      style={[
-                        styles.text,
-                        {
-                          fontWeight: 'bold',
-                          fontSize: 15,
-                        },
-                      ]}>
-                      {item.author}{' '}
-                      <Text
-                        style={{
-                          color: 'gray',
-                          fontWeight: 'normal',
-                        }}>
-                        @{item.tag} · {index + 1}d
-                      </Text>
-                    </Text>
-
-                    <Text style={[styles.text, {fontSize: 15}]}>
-                      {item.description}
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            {/* </View> */}
-          </View>
-        </Animated.FlatList>
+            </View>
+          ))}
+        </Animated.ScrollView>
       </View>
     </View>
   );

@@ -7,7 +7,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 function App(): JSX.Element {
   return (
     <SafeAreaProvider>
-     <TwitterProfile/>
+     <FbProfile/>
     </SafeAreaProvider>
   );
 }

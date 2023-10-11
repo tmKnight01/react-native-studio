@@ -124,7 +124,7 @@ const HeaderComponent: React.FC<ScrollHeaderProps> = ({
     return {
       transform: [
         {scale: profileImageScale.value},
-        {translateY: profileImageTranslationY},
+        // {translateY: profileImageTranslationY},
       ],
     };
   });
@@ -387,8 +387,8 @@ const TwitterProfile: React.FC = () => {
         // We ignore safe areas since we want the banner to apply the safe area more granularly
         // to each header. This will allow the banner to maintain a full width, while adjusting
         // other relevant components to respect the safe area.
-        ignoreLeftSafeArea
-        ignoreRightSafeArea
+        // ignoreLeftSafeArea
+        // ignoreRightSafeArea
         headerFadeInThreshold={0.2}
         disableLargeHeaderFadeAnim
         style={styles.container}
