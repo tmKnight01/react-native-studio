@@ -1,4 +1,5 @@
 /*复选组件有多种表现形式，我们先来实现 CheckLabel。主要是使用 useContext 这个 hook。*/
+import React from 'react';
 import {Pressable, StyleProp, TextStyle, Text, StyleSheet} from 'react-native';
 import {Item} from './CheckContext';
 import useCheckContext from '../../../hooks/useCheckContext';
