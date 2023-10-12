@@ -12,7 +12,7 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BlurView} from 'expo-blur';
 import Icon from 'react-native-vector-icons/AntDesign';
-
+const DISABLED_COLOR = 'rgba(255, 255, 255, 0.6)';
 function FbProfile() {
   const insets = useSafeAreaInsets();
   const HEADER_HEIGHT_EXPANDED = 35;
@@ -66,16 +66,34 @@ function FbProfile() {
           zIndex: 2,
           position: 'absolute',
           top: 10 + insets.top,
-          left: 20,
-          backgroundColor: 'rgba(0, 0, 0, 0.6)',
-          height: 30,
-          width: 30,
-          borderRadius: 15,
+          paddingHorizontal: 20,
+          flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'center',
         }}>
-        <Icon name="arrowleft" size={16} color="white" />
+        <View
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            height: 30,
+            width: 30,
+            borderRadius: 15,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Icon name="arrowleft" size={16} color="white" />
+        </View>
+        <Animated.View
+          style={{
+            marginLeft: 10,
+            opacity: ScrollY.interpolate({
+              inputRange: [0, 40],
+              outputRange: [0, 1],
+            }),
+          }}>
+          <Text style={styles.navBarTitle}>Evan Younan</Text>
+          <Text style={styles.disabledSmallText}>19.4k Tweets</Text>
+        </Animated.View>
       </View>
+
       <AnimatedImageBackground
         source={{uri: PROFILE_BANNER_URI}}
         style={{
@@ -106,22 +124,28 @@ function FbProfile() {
           }}
         /> */}
       </AnimatedImageBackground>
-      <View style={{flex: 1, backgroundColor: 'black', paddingHorizontal: 20}}>
+      <View style={{flex: 1, paddingHorizontal: 20}}>
         <Animated.Image
           source={{uri: PROFILE_PICTURE_URI}}
           style={{
             width: 75,
             height: 75,
+            marginTop: -32,
             borderRadius: 40,
             borderWidth: 4,
             borderColor: 'black',
-            marginTop: -32,
-            zIndex: 99,
             transform: [
               {
                 scale: ScrollY.interpolate({
                   inputRange: [0, TRANSLATION_Y],
                   outputRange: [1, 0.5],
+                  extrapolate: 'clamp',
+                }),
+              },
+              {
+                translateY: ScrollY.interpolate({
+                  inputRange: [0, TRANSLATION_Y],
+                  outputRange: [0, -150],
                   extrapolate: 'clamp',
                 }),
               },
@@ -131,7 +155,6 @@ function FbProfile() {
         <Animated.ScrollView
           showsHorizontalScrollIndicator={false}
           style={{
-            // height: '100%',
             flex: 1,
             zIndex: 3,
           }}
@@ -258,6 +281,8 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: 'rgba(255, 255, 255, 0.25)',
   },
+  navBarTitle: {fontSize: 16, fontWeight: 'bold', color: 'white'},
+  disabledSmallText: {color: DISABLED_COLOR, fontSize: 12},
 });
 
 export default FbProfile;
